@@ -1,0 +1,4 @@
+nodeMCU		RF433
+Vin			Vcc
+Gnd			Gnd
+D2			Data

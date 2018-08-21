@@ -1,0 +1,15 @@
+[items]
+
+/* RF433 */
+Switch Lamp_GF_Kitchen "Lamp Kitchen" (GF_Kitchen, RF433) {mqtt=">[mymosquitto:home/esp/node03/rf433:command:on:ON],>[mymosquitto:home/esp/node03/rf433:command:off:OFF], <[mymosquitto:home/esp/node03/rf433:state:default]"}
+
+[sitemap]
+sitemap default label="FutureCraft" {
+		Frame label="LED Light" {
+			Colorpicker item=Light_GF_Living icon="slider"
+            Selection item=LightAnimation_GF_Living mappings=[0=OFF, 1=RGB_wipe, 2=TheaterChase, 3=Rainbow]
+        }
+		Frame label="Lamp RF433" {
+                Switch item=Lamp_GF_Kitchen="Lamp Kitchen"
+        }
+}
