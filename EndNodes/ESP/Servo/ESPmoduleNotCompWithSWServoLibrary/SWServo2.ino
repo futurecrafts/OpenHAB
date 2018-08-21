@@ -96,7 +96,7 @@ void loop() {
   
   if (WiFi.status() == WL_CONNECTED) {
       if (!client.connected()) {
-        if (client.connect("ESPClient03")) {
+        if (client.connect("ESPClient03SWServo")) {
         //client.publish("outTopic","hello world");
         client.subscribe("home/esp/node03/servo");
       //delay(5000);
