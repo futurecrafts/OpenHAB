@@ -1,0 +1,54 @@
+[items]
+
+Dimmer ServoVer_Cam "ServoVer [%d %%]" <slider> (SF_Living, Servo) {mqtt=">[ybmosquitto:home/esp/node03/servocam/ver:command:*:default]"}
+Dimmer ServoHor_Cam "ServoHor [%d %%]" <slider> (SF_Living, Servo) {mqtt=">[ybmosquitto:home/esp/node03/servocam/hor:command:*:default]"}
+
+[rules]
+rule "Servo Ver2"
+	when
+		Item ServoVer_Cam received command
+	then
+		var Number percent = 0
+		if(ServoVer_Cam.state instanceof DecimalType) percent = ServoVer_Cam.state as DecimalType 
+			
+		if(receivedCommand==INCREASE) percent = percent + 5
+		if(receivedCommand==DECREASE) percent = percent - 5
+
+		if(percent<0)   percent = 0
+		if(percent>100) percent = 100
+		postUpdate(ServoVer_Cam, percent);
+end
+
+rule "Servo Hor2"
+	when
+		Item ServoHor_Cam received command
+	then
+		var Number percent = 0
+		if(ServoHor_Cam.state instanceof DecimalType) percent = ServoHor_Cam.state as DecimalType 
+			
+		if(receivedCommand==INCREASE) percent = percent + 5
+		if(receivedCommand==DECREASE) percent = percent - 5
+
+		if(percent<0)   percent = 0
+		if(percent>100) percent = 100
+		postUpdate(ServoHor_Cam, percent);
+end
+
+[sitemap]
+sitemap default label="FutureCraft" {
+		Frame label="LED Light" {
+			Colorpicker item=Light_GF_Living icon="slider"
+            Selection item=LightAnimation_GF_Living mappings=[0=OFF, 1=RGB_wipe, 2=TheaterChase, 3=Rainbow]
+        }
+		Frame label="Servo Cam" {
+            Slider item=ServoVer_Cam
+		    Slider item=ServoHor_Cam
+        }
+		Frame label="Servo Move" {
+			Selection item=ServoMove label="Servo" mappings=[0=Forward, 1=Backward, 2=Left, 3=Right]
+			Switch item=ServoMove label="Servo" mappings=[0=Forward, 1=Backward, 2=Left, 3=Right]
+		}
+		Frame label="Lamp RF433" {
+            Switch item=Lamp_GF_Kitchen="Lamp Kitchen"
+        }
+}
