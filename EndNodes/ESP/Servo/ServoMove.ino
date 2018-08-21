@@ -16,7 +16,7 @@ PubSubClient client(wclient, server);
 
 void callback(const MQTT::Publish& pub) {
   // handle message arrived
-  if (pub.topic() == "home/esp/node02-3/servo")
+  if (pub.topic() == "home/esp/node03/servo")
   {
     Serial.print(pub.topic());
     Serial.print(pub.payload_string());
