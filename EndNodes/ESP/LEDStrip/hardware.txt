@@ -1,0 +1,3 @@
+﻿ESP module:  D4 pin <-> LED strip: Din
+ESP module 3.3v -> LED strip 5V
+ESP module ground -> LED strip Ground

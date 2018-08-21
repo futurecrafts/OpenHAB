@@ -1,0 +1,55 @@
+[Items]
+
+Group All
+Group GF (All)
+Group FF (All)
+Group SF (All)
+
+Group GF_Living     "Living Room"   <video>     (GF)
+Group GF_Kitchen 	"Kitchen" 		<kitchen> 	(GF)
+Group GF_Toilet 	"Toilet" 		<bath> 		(GF)
+Group GF_Corridor 	"Corridor" 		<corridor> 	(GF)
+
+Group FF_Living     "Living Room"   <video>     (FF)
+Group FF_Kitchen 	"Kitchen" 		<kitchen> 	(FF)
+Group FF_Toilet 	"Toilet" 		<bath> 		(FF)
+Group FF_Corridor 	"Corridor" 		<corridor> 	(FF)
+
+Group SF_Living     "Living Room"   <video>     (SF)
+Group SF_Kitchen 	"Kitchen" 		<kitchen> 	(SF)
+Group SF_Toilet 	"Toilet" 		<bath> 		(SF)
+Group SF_Corridor 	"Corridor" 		<corridor> 	(SF)
+
+/* Lights */
+Color Light_GF_Living "LED Color"               (GF_Living, Lights)
+String LightColor_GF_Living                     (GF_Living, Lights) {mqtt=">[ybmosquitto:home/esp/node01/color:command:*:default]"}
+Number LightAnimation_GF_Living "LED Animation" (GF_Living, Lights) {mqtt=">[ybmosquitto:home/esp/node01/animation:command:*:default]"}
+
+[rules]
+
+import org.openhab.core.library.types.*
+
+rule "LED Light"
+when
+        Item Light_GF_Living changed
+then
+        val hsbValue = Light_GF_Living.state as HSBType
+
+        val brightness = hsbValue.brightness.intValue
+        val redValue   = ((((hsbValue.red.intValue * 255) / 100) * brightness) / 100).toString
+        val greenValue = ((((hsbValue.green.intValue * 255) / 100) * brightness) / 100).toString
+        val blueValue  = ((((hsbValue.blue.intValue *255) / 100) * brightness) / 100).toString
+
+        val color = redValue + "," + greenValue + "," + blueValue
+
+        sendCommand( LightColor_GF_Living, color )
+end
+
+[sitemap]
+
+sitemap default label="FutureCraft" {
+		Frame label="LED Light" {
+			Colorpicker item=Light_GF_Living icon="slider"
+            Selection item=LightAnimation_GF_Living mappings=[0=OFF, 1=RGB_wipe, 2=TheaterChase, 3=Rainbow, 4=RainbowCycle, 5=TheaterChaseRainbow]
+        }
+}
