@@ -165,7 +165,7 @@ void loop() {
   
   if (WiFi.status() == WL_CONNECTED) {
       if (!client.connected()) {
-        if (client.connect("ESPClient01")) {
+        if (client.connect("ESPClient02")) {
         //client.publish("outTopic","hello world");
         client.subscribe("home/esp/node02/color");
       delay(5000);
