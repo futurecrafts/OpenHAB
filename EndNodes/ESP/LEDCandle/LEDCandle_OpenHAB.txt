@@ -1,0 +1,8 @@
+[Items]
+Switch LED_Candle "LED Candle" <network> { mqtt=">[ybmosquitto:home/esp/node01/ledcandle:command:on:ON],>[ybmosquitto:home/esp/node01/ledcandle:command:off:OFF], <[ybmosquitto:home/esp/node01/ledcandle:state:default]"}
+
+[Sitemap]
+sitemap default label="YMSY Family House"
+{
+  Switch item=LED_Candle label="LED Candle"
+}
