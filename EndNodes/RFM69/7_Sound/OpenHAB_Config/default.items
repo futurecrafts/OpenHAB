@@ -1,0 +1,95 @@
+Group All
+Group GF (All)
+Group FF (All)
+Group SF (All)
+Group OS (All)
+
+Group GF_Living     "Living Room"   <video>     (GF)
+Group GF_Kitchen 	"Kitchen" 		<kitchen> 	(GF)
+Group GF_Toilet 	"Toilet" 		<bath> 		(GF)
+Group GF_Corridor 	"Corridor" 		<corridor> 	(GF)
+
+Group FF_Living     "Living Room"   <video>     (FF)
+Group FF_Kitchen 	"Kitchen" 		<kitchen> 	(FF)
+Group FF_Toilet 	"Toilet" 		<bath> 		(FF)
+Group FF_Corridor 	"Corridor" 		<corridor> 	(FF)
+
+Group SF_Living     "Living Room"   <video>     (SF)
+Group SF_Kitchen 	"Kitchen" 		<kitchen> 	(SF)
+Group SF_Toilet 	"Toilet" 		<bath> 		(SF)
+Group SF_Corridor 	"Corridor" 		<corridor> 	(SF)
+
+Group OS_Main		"Outside Main"   <video>    (OS)
+Group OS_Front		"Outside Front"  <kitchen>  (OS)
+Group OS_Rear		"Outside Rear"   <bath>     (OS)
+
+/* Lights */
+Color Light_GF_Living "LED Color"               (GF_Living, Lights)
+String LightColor_GF_Living                     (GF_Living, Lights) {mqtt=">[mymosquitto:home/esp/node01/color:command:*:default]"}
+Number LightAnimation_GF_Living "LED Animation" (GF_Living, Lights) {mqtt=">[mymosquitto:home/esp/node01/animation:command:*:default]"}
+
+/* RF433 */
+Switch Lamp_GF_Kitchen "Lamp Kitchen" (GF_Kitchen, RF433) {mqtt=">[mymosquitto:home/esp/node03/rf433:command:on:ON],>[mymosquitto:home/esp/node03/rf433:command:off:OFF], <[mymosquitto:home/esp/node03/rf433:state:default]"}
+
+/* Servo */
+Dimmer ServoVer_FF_Living "ServoVer [%d %%]" <slider> (FF_Living, Servo) {mqtt=">[mymosquitto:home/esp/node02/servo/ver:command:*:default]"}
+Dimmer ServoHor_FF_Living "ServoHor [%d %%]" <slider> (FF_Living, Servo) {mqtt=">[mymosquitto:home/esp/node02/servo/hor:command:*:default]"}
+
+Dimmer ServoVer_SF_Living "ServoVer [%d %%]" <slider> (SF_Living, Servo) {mqtt=">[mymosquitto:home/esp/node02-2/servo/ver:command:*:default]"}
+Dimmer ServoHor_SF_Living "ServoHor [%d %%]" <slider> (SF_Living, Servo) {mqtt=">[mymosquitto:home/esp/node02-2/servo/hor:command:*:default]"}
+
+Number ServoMove "Servo Move" (SF_Corridor, Servo) {mqtt=">[mymosquitto:home/esp/node02-3/servo:command:*:default]"}
+
+/* Temp and Humid */
+Number RF_Temp_OS_Main "Outside Temperature [%.1f C]" (OS_Main, Temps) {mqtt="<[mymosquitto:home/rfm_gw/nb/node02/dev48:state:default]"}
+Number RF_Hum_OS_Main "Outside Humidity [%.1f]" (OS_Main, Humids) {mqtt="<[mymosquitto:home/rfm_gw/nb/node02/dev49:state:default]"}
+Number RFCommon_Temp_OS_Main "Outside Temperature [%.1f C]" (OS_Main, Temps) {mqtt="<[mymosquitto:home/rfm_gw/nb/node03/dev48:state:default]"}
+Number RFCommon_Hum_OS_Main "Outside Humidity [%.1f]" (OS_Main, Humids) {mqtt="<[mymosquitto:home/rfm_gw/nb/node03/dev49:state:default]"}
+
+/* Gas and Smoke */
+Number RFCommon_Gas_OS_Main "Gas [%.1f]" (OS_Main, Gas) {mqtt="<[mymosquitto:home/rfm_gw/nb/node03/dev50:state:default]"}
+
+/* Flame */
+Number RFCommon_Flame_OS_Main "Flame [%.1f]" (OS_Main, Flame) {mqtt="<[mymosquitto:home/rfm_gw/nb/node03/dev51:state:default]"}
+
+/* Light */
+Number RFCommon_Light_OS_Main "Light Sensor [%.1f]" (OS_Main, Light) {mqtt="<[mymosquitto:home/rfm_gw/nb/node03/dev52:state:default]"}
+
+/* PIR */
+/*Switch RFCommon_PIR_OS_Front "PIR" (OS_Front, PIR) {mqtt="<[mymosquitto:home/rfm_gw/nb/node03/dev41:state:default]"}*/
+Switch RFCommon_PIR_OS_Front_STS "PIR Presence Status" (OS_Front, PIR) {mqtt="<[mymosquitto:home/rfm_gw/nb/node03/dev41:state:default]"}
+
+/* Reed */
+Switch RFCommon_Reed_OS_Rear_STS "Reed Status" (OS_Rear, Reed) {mqtt="<[mymosquitto:home/rfm_gw/nb/node03/dev43:state:default]"}
+Number RFCommon_Reed_OS_Rear_Count "Reed Count [%.1d]" (OS_Rear, Reed) {mqtt="<[mymosquitto:home/rfm_gw/nb/node03/dev64:state:default]"}
+
+/* Sound */
+Switch RFCommon_Sound_OS_Rear_STS "Sound Status" (OS_Rear, Sound) {mqtt="<[mymosquitto:home/rfm_gw/nb/node03/dev42:state:default]"}
+
+/* GPS */
+Number GPS_lat "GPS lat [%.5f]" (OS_Front, GPS) {mqtt="<[mymosquitto:home/rfm_gw/nb/node07/dev62:state:default]"}
+Number GPS_long "GPS long [%.5f]" (OS_Front, GPS) {mqtt="<[mymosquitto:home/rfm_gw/nb/node07/dev63:state:default]"}
+String Yulia_GPS "Yulia_GPS string [%s]" {mqtt="<[mymosquitto:yuliagps:state:JS(mqttitude-coordinates.js)]"}
+Switch Yulia_GPS_alm_enb "Yulia Escape Alarm Enable"
+Switch Yulia_GPS_alm_sta "Yulia Escape Alarm Status"
+
+/* Status */
+Switch RF_Temp_OS_Main_STS "Outside Temp Alarm Status"
+Switch RFCommon_Gas_OS_Main_STS "Gas / Smoke Alarm Status"
+Switch RFCommon_Flame_OS_Main_STS "Flame Alarm Status"
+Switch RFCommon_Light_OS_Main_STS "Light Status"
+/*Switch RFCommon_PIR_OS_Front_STS "PIR Presence Status"*/
+
+/* Notifier */
+Switch RFCommon_Gas_OS_Main_Enb "Gas / Smoke Notifier"
+Switch RFCommon_Flame_OS_Main_Enb "Flame Notifier"
+Switch RFCommon_PIR_OS_Front_Enb "Presence Notifier"
+Switch RFCommon_Reed_OS_Rear_Enb "Reed Notifier"
+Switch RFCommon_Sound_OS_Rear_Enb "Sound Notifier"
+
+/* Date and Time */
+DateTime RFCommon_Gas_OS_Main_Time "Gas Alarm Time [%1$tA, %1$tm/%1$td, %1$tI:%1$tM %1$tp]"
+DateTime RFCommon_Flame_OS_Main_Time "Flame Alarm Time [%1$tA, %1$tm/%1$td, %1$tI:%1$tM %1$tp]"
+DateTime RFCommon_PIR_OS_Front_Time "PIR Presence Alarm Time [%1$tA, %1$tm/%1$td, %1$tI:%1$tM %1$tp]"
+DateTime RFCommon_Reed_OS_Rear_Time "Reed Last Updated [%1$tA, %1$tm/%1$td, %1$tI:%1$tM %1$tp]"
+DateTime RFCommon_Sound_OS_Rear_Time "Sound Last Updated [%1$tA, %1$tm/%1$td, %1$tI:%1$tM %1$tp]"
