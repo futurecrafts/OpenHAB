@@ -1,0 +1,4 @@
+1 -> Vcc
+2 -> Data
+3 -> nothing
+4 -> GND

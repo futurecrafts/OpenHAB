@@ -1,0 +1,62 @@
+[items]
+
+/* Temp and Humid */
+Number RF_Temp_OS_Main "Outside Temperature [%.1f C]" (OS_Main, Temps) {mqtt="<[ybmosquitto:home/rfm_gw/nb/node02/dev48:state:default]"}
+Number RF_Hum_OS_Main "Outside Humidity [%.1f]" (OS_Main, Humids) {mqtt="<[ybmosquitto:home/rfm_gw/nb/node02/dev49:state:default]"}
+
+[sitemap]
+
+
+[rules]
+
+
+rule "RFM DHT-Temp threshold"
+        when
+            Item RF_Temp_OS_Main received update
+        then
+            if(RF_Temp_OS_Main.state > 25)
+            {
+                sendCommand(RF_Temp_OS_Main_STS, ON)
+            }
+			else
+			{
+			    sendCommand(RF_Temp_OS_Main_STS, OFF)
+			}
+end
+
+rule "RFM DHT-Temp response"
+        when
+            Item RF_Temp_OS_Main_STS changed from OFF to ON
+        then
+            playSound("ding.mp3")
+			playSound("doorbell.mp3")
+end
+
+[sitemap]
+
+sitemap default label="FutureCraft" {
+		Frame label="LED Light" {
+			Colorpicker item=Light_GF_Living icon="slider"
+            Selection item=LightAnimation_GF_Living mappings=[0=OFF, 1=RGB_wipe, 2=TheaterChase, 3=Rainbow]
+        }
+		Frame label="Servo Control" {
+            Slider item=ServoVer_FF_Living
+		    Slider item=ServoHor_FF_Living
+        }
+		Frame label="Servo Control NoLua" {
+            Slider item=ServoVer_SF_Living
+		    Slider item=ServoHor_SF_Living
+        }
+		Frame label="Servo Move" {
+			Selection item=ServoMove label="Servo" mappings=[0=Forward, 1=Backward, 2=Left, 3=Right]
+			Switch item=ServoMove label="Servo" mappings=[0=Forward, 1=Backward, 2=Left, 3=Right]
+		}
+		Frame label="RFM Nodes" {
+			Text item=RF_Temp_OS_Main
+            Text item=RF_Hum_OS_Main
+			Switch item=RF_Temp_OS_Main_STS mappings=[OFF="OFF", ON="ON"]
+        }
+		Frame label="Lamp RF433" {
+            Switch item=Lamp_GF_Kitchen="Lamp Kitchen"
+        }
+}
