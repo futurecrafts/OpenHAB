@@ -1,0 +1,15 @@
+2 types of USB-TTL
+
+<1> with DTR ( don't need to reset arduino)
+
+
+<2> without DTR ( should reset arduino)
+
+
+Arduino			USB to TTL
+vcc			5v
+GND			GND
+TX			RXD
+RX			TXD
+
+GRN			DTR
