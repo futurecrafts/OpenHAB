@@ -1,0 +1,2 @@
+do not use the same name of library with sub-sources.
+for example, DHT folder => DHT.cpp ( not working)
