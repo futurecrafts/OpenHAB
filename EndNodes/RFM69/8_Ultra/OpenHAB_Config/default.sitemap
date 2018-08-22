@@ -1,0 +1,76 @@
+sitemap default label="FutureCraft" {
+		Frame label="LED Light" {
+			Colorpicker item=Light_GF_Living icon="slider"
+            Selection item=LightAnimation_GF_Living mappings=[0=OFF, 1=RGB_wipe, 2=TheaterChase, 3=Rainbow, 4=RainbowCycle, 5=TheaterChaseRainbow]
+        }
+		Frame label="Servo Control" {
+            Slider item=ServoVer_FF_Living
+		    Slider item=ServoHor_FF_Living
+        }
+		Frame label="Servo Control NoLua" {
+            Slider item=ServoVer_SF_Living
+		    Slider item=ServoHor_SF_Living
+        }
+		Frame label="Servo Move" {
+			Selection item=ServoMove label="Servo" mappings=[0=Forward, 1=Backward, 2=Left, 3=Right]
+			Switch item=ServoMove label="Servo" mappings=[0=Forward, 1=Backward, 2=Left, 3=Right]
+		}
+		Frame label="RFM Nodes" {
+			Text item=RF_Temp_OS_Main
+            Text item=RF_Hum_OS_Main
+			Switch item=RF_Temp_OS_Main_STS mappings=[OFF="OFF", ON="ON"]
+			Text item=RFCommon_Temp_OS_Main
+            Text item=RFCommon_Hum_OS_Main
+        }
+		Frame label="RFM Common Nodes" {
+            Text item=RFCommon_Gas_OS_Main
+            Switch item=RFCommon_Gas_OS_Main_STS mappings=[OFF="OFF"]
+            Switch item=RFCommon_Gas_OS_Main_Enb
+			Text item=RFCommon_Gas_OS_Main_Time
+			Text item=RFCommon_Flame_OS_Main
+            Switch item=RFCommon_Flame_OS_Main_STS mappings=[OFF="OFF"]
+            Switch item=RFCommon_Flame_OS_Main_Enb
+			Text item=RFCommon_Flame_OS_Main_Time
+			Text item=RFCommon_Light_OS_Main
+			Switch item=RFCommon_Light_OS_Main_STS
+			Switch item=RFCommon_PIR_OS_Front_STS mappings=[OFF="OFF", ON="ON"]
+			Switch item=RFCommon_PIR_OS_Front_Enb
+			Text item=RFCommon_PIR_OS_Front_Time
+			Switch item=RFCommon_Reed_OS_Rear_STS mappings=[OFF="OFF", ON="ON"]
+			Text item=RFCommon_Reed_OS_Rear_Count
+			Switch item=RFCommon_Reed_OS_Rear_Enb
+			Text item=RFCommon_Reed_OS_Rear_Time
+			Switch item=RFCommon_Sound_OS_Rear_STS mappings=[OFF="OFF", ON="ON"]
+			Switch item=RFCommon_Sound_OS_Rear_Enb
+			Text item=RFCommon_Sound_OS_Rear_Time
+			Text item=RFCommon_Ultra_OS_Garage
+			Text item=RFCommon_Ultra_OS_Garage_Door label="Garage Door Status [%s]"
+        }
+		Frame label="Yulia GPS"
+	    {
+		    Text label="Current Location" icon="firstfloor" {
+			Frame label="Current Location" {
+				Webview url="http://localhost:8080/static/dog.html" height=16
+			  }
+		    }//end page "current Location"
+		    Text label="Historical Location" icon="firstfloor" {
+			Frame label="Historical Location" {
+				Webview url="http://localhost:8080/static/dog2.html" height=16
+			  }
+		    }//end page "Historical Location"
+		    Switch item=Yulia_GPS_alm_sta mappings=[OFF="OFF"]
+		    Switch item=Yulia_GPS_alm_enb
+		    Text label="Yulia Tracker Setup" icon="firstfloor"
+		    {
+			    Frame label="Raw Data" {
+				    Text item=GPS_lat
+				    Text item=GPS_long
+				    Text item=Yulia_GPS
+			    }
+		    }//end page "Yulia Tracker Setup"
+		
+	    }//end frame "" for dog GPS
+		Frame label="Lamp RF433" {
+            Switch item=Lamp_GF_Kitchen="Lamp Kitchen"
+        }
+}
