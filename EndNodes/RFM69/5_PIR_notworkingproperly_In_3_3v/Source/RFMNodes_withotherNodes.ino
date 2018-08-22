@@ -34,7 +34,7 @@
 #define NODEID 3          // unique node ID within the closed network
 #define GATEWAYID 1         // node ID of the Gateway is always 1
 #define NETWORKID 100         // network ID of the network
-#define ENCRYPTKEY "futurecraftyblim"       // 16-char encryption key; same as on Gateway!
+#define ENCRYPTKEY "Yourencryptkeys"       // 16-char encryption key; same as on Gateway!
 #define DEBUG           // uncomment for debugging
 #define VERSION "RFMNODES V2.1"       // this value can be queried as device 3
 
