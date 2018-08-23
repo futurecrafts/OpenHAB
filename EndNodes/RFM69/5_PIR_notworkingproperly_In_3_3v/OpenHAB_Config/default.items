@@ -1,8 +1,9 @@
 /* PIR */
-Switch RFCommon_PIR_OS_Front "PIR" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node03/dev41:state:default]"}
+/*Switch RFCommon_PIR_OS_Front "PIR" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node03/dev41:state:default]"}*/
+Switch RFCommon_PIR_OS_Front_STS "PIR Presence Status" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node03/dev41:state:default]"}
 
 /* Status */
-Switch RFCommon_PIR_OS_Front_STS "PIR Presence Status"
+/*Switch RFCommon_PIR_OS_Front_STS "PIR Presence Status"*/
 
 /* Notifier */
 Switch RFCommon_PIR_OS_Front_Enb "Presence Notifier"
