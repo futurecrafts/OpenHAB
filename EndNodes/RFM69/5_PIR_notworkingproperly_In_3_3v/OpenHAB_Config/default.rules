@@ -1,18 +1,18 @@
 import org.openhab.core.library.types.*
 
-rule "RFM PIR threshold"
-        when
-                Item RFCommon_PIR_OS_Front received update
-        then
-                if(RFCommon_PIR_OS_Front.state == ON)
-                {
-                        sendCommand(RFCommon_PIR_OS_Front_STS, ON)
-                }
-				else
-				{
-						sendCommand(RFCommon_PIR_OS_Front_STS, OFF)
-				}
-end
+//rule "RFM PIR threshold"
+//        when
+//                Item RFCommon_PIR_OS_Front received update
+//        then
+//                if(RFCommon_PIR_OS_Front.state == ON)
+//                {
+//                        sendCommand(RFCommon_PIR_OS_Front_STS, ON)
+//                }
+//				else
+//				{
+//						sendCommand(RFCommon_PIR_OS_Front_STS, OFF)
+//				}
+//end
 
 rule "RFM PIR response"
         when
