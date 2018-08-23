@@ -1,0 +1,68 @@
+We will be using a package called motion if you want to learn more about it you can check out their website: Motion.
+
+    We will be using the terminal so open up terminal on the Pi or via SSH.
+    Let’s check for any updates for Raspbian and its packages.
+
+sudo apt-get update
+sudo apt-get upgrade
+
+    First we will need to download and install motion, to do this enter the following command:
+
+    sudo apt-get install motion
+
+    Now we need to make some edits to the configuration file (motion.conf)
+
+sudo nano /etc/motion/motion.conf
+
+    Find the following lines and change them to the following.
+        daemon on
+        webcam_localhost off
+        Optional (Don’t include the text in brackets)
+        webcam_maxrate 100 (This will allow for real-time streaming but requires more bandwidth)
+        framerate 100 (This will allow for 100 frames to be captured per second allowing for smooth video)
+        width 640 (This changes the width of the image displayed)
+        height 480 (This changes the height of the image displayed)
+    Now we need to setup up the daemon, first we need to edit the motion file.
+
+sudo nano /etc/default/motion
+
+    Find the following line and change it to the following:
+
+    start_motion_daemon=yes
+
+    Now make sure the camera is connected and run the following line
+
+sudo service motion start
+
+    If you need to stop the service simply run the following command
+
+sudo service motion stop
+
+    Now to test it out! We can check out the Raspberry Pi Web Cam Stream at the ip address of our Pi so in your browser go to the following address:
+
+192.168.1.103:8081
+
+11. In OpenHAB sitemap,
+
+I have found out something: changing the value webcam_localhost, within the motion conf file, from on(default) to off, enables access to the stream from other server than localhost, and then the line
+
+Correct setting is,
+
+Frame label=”WebCam” {
+
+Video url=”http://localhost:8081″ encoding=”mjpeg”
+
+}
+
+만약 port 충돌이 나면 8081을 다른걸로 바꿔준다.
+
+=> 중요!!! OpenHAB의 start.sh 혹은 start.bat 안의 http port를 8080이 아닌 9080등으로 바꿔주어야 한다!!!!
+
+ 
+
+Video label="Livingroom" url="http://localhost:8081/" encoding="MJPEG"
+
+Video item=cam1 icon="video" url="http://user:pass@192.168.0.53/mjpg/video.mjpg" encoding="mjpeg"
+
+Webview item=cam1 icon="video" url="http://user:pass@192.168.0.53/mjpg/video.mjpg" height=480
+
