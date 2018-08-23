@@ -3,16 +3,10 @@
 Number ServoMove "Servo Move" (SF_Corridor, Servo) {mqtt=">[ybmosquitto:home/esp/node03/servo:command:*:default]"}
 
 [sitemap]
-sitemap default label="FutureCraft" {
-		Frame label="LED Light" {
-			Colorpicker item=Light_GF_Living icon="slider"
-            Selection item=LightAnimation_GF_Living mappings=[0=OFF, 1=RGB_wipe, 2=TheaterChase, 3=Rainbow]
-        }
+sitemap default label="YMSY Family House" {	
 		Frame label="Servo Move" {
 			Selection item=ServoMove label="Servo" mappings=[0=Forward, 1=Backward, 2=Left, 3=Right]
 			Switch item=ServoMove label="Servo" mappings=[0=Forward, 1=Backward, 2=Left, 3=Right]
-		}
-		Frame label="Lamp RF433" {
-            Switch item=Lamp_GF_Kitchen="Lamp Kitchen"
+		}	
         }
 }
