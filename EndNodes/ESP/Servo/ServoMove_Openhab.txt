@@ -1,6 +1,6 @@
 [items]
 
-Number ServoMove "Servo Move" (SF_Corridor, Servo) {mqtt=">[ybmosquitto:home/esp/node03/servo:command:*:default]"}
+Number ServoMove "Servo Move" <network> {mqtt=">[ybmosquitto:home/esp/node03/servo:command:*:default]"}
 
 [sitemap]
 sitemap default label="YMSY Family House" {	
