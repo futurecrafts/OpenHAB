@@ -3,6 +3,7 @@
 /* Temp and Humid */
 Number RFCommon_Temp_OS_Main "Outside Temperature [%.1f C]" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node03/dev48:state:default]"}
 Number RFCommon_Hum_OS_Main "Outside Humidity [%.1f]" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node03/dev49:state:default]"}
+Switch RFCommon_Temp_OS_Main_STS "Outside Temp Alarm Status"
 
 [rules]
 
