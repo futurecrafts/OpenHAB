@@ -1,0 +1,3 @@
+Frame label="WebCam" {
+            Video url="http://localhost:8081" encoding="mjpeg"
+}
