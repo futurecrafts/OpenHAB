@@ -1,8 +1,8 @@
 sitemap default label="YMSY Family House" {		
 		Frame label="RFM Nodes" {
 			Text item=RFCommon_Flame_OS_Main
-            Switch item=RFCommon_Flame_OS_Main_STS mappings=[OFF="OFF"]
-            Switch item=RFCommon_Flame_OS_Main_Enb
+            		Switch item=RFCommon_Flame_OS_Main_STS mappings=[OFF="OFF"]
+            		Switch item=RFCommon_Flame_OS_Main_Enb
 			Text item=RFCommon_Flame_OS_Main_Time
         }	
 }
