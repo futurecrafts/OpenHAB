@@ -1,0 +1,87 @@
+[Items]
+Switch LED_Candle "LED Candle" <network> {mqtt=">[ybmosquitto:home/esp/node01/ledcandle:command:on:ON],>[ybmosquitto:home/esp/node01/ledcandle:command:off:OFF], <[ybmosquitto:home/esp/node01/ledcandle:state:default]"}
+
+/* Lights */
+Color Light_GF_Living "LED Color"               <network>
+String LightColor_GF_Living                     <network> {mqtt=">[ybmosquitto:home/esp/node02/color:command:*:default]"}
+Number LightAnimation_GF_Living "LED Animation" <network> {mqtt=">[ybmosquitto:home/esp/node02/animation:command:*:default]"}
+
+Number ServoMove "Servo Move" <network> {mqtt=">[ybmosquitto:home/esp/node03/servo:command:*:default]"}
+
+Dimmer ServoVer_Cam "ServoVer [%d %%]" <slider> {mqtt=">[ybmosquitto:home/esp/node03/servocam/ver:command:*:default]"}
+Dimmer ServoHor_Cam "ServoHor [%d %%]" <slider> {mqtt=">[ybmosquitto:home/esp/node03/servocam/hor:command:*:default]"}
+
+Switch Lamp_GF_Kitchen "Lamp Kitchen" <network> {mqtt=">[ybmosquitto:home/esp/node04/rf433:command:on:ON],>[ybmosquitto:home/esp/node04/rf433:command:off:OFF], <[ybmosquitto:home/esp/node04/rf433:state:default]"}
+
+
+[rules]
+
+import org.openhab.core.library.types.*
+
+rule "LED Light"
+when
+        Item Light_GF_Living changed
+then
+        val hsbValue = Light_GF_Living.state as HSBType
+
+        val brightness = hsbValue.brightness.intValue
+        val redValue   = ((((hsbValue.red.intValue * 255) / 100) * brightness) / 100).toString
+        val greenValue = ((((hsbValue.green.intValue * 255) / 100) * brightness) / 100).toString
+        val blueValue  = ((((hsbValue.blue.intValue *255) / 100) * brightness) / 100).toString
+
+        val color = redValue + "," + greenValue + "," + blueValue
+
+        sendCommand( LightColor_GF_Living, color )
+end
+
+rule "Servo Ver2"
+	when
+		Item ServoVer_Cam received command
+	then
+		var Number percent = 0
+		if(ServoVer_Cam.state instanceof DecimalType) percent = ServoVer_Cam.state as DecimalType 
+			
+		if(receivedCommand==INCREASE) percent = percent + 5
+		if(receivedCommand==DECREASE) percent = percent - 5
+
+		if(percent<0)   percent = 0
+		if(percent>100) percent = 100
+		postUpdate(ServoVer_Cam, percent);
+end
+
+rule "Servo Hor2"
+	when
+		Item ServoHor_Cam received command
+	then
+		var Number percent = 0
+		if(ServoHor_Cam.state instanceof DecimalType) percent = ServoHor_Cam.state as DecimalType 
+			
+		if(receivedCommand==INCREASE) percent = percent + 5
+		if(receivedCommand==DECREASE) percent = percent - 5
+
+		if(percent<0)   percent = 0
+		if(percent>100) percent = 100
+		postUpdate(ServoHor_Cam, percent);
+end
+
+[sitemap]
+
+sitemap default label="YMSY Family House" {
+        Switch item=LED_Candle label="LED Candle"
+		Frame label="LED Light" {
+			Colorpicker item=Light_GF_Living icon="slider"
+            Selection item=LightAnimation_GF_Living mappings=[0=OFF, 1=RGB_wipe, 2=TheaterChase, 3=Rainbow, 4=RainbowCycle, 5=TheaterChaseRainbow]
+        }
+		Frame label="Servo Move" {
+  			Selection item=ServoMove label="Servo" mappings=[0=Forward, 1=Backward, 2=Left, 3=Right]
+  			Switch item=ServoMove label="Servo" mappings=[0=Forward, 1=Backward, 2=Left, 3=Right]
+ 	    } 
+		Frame label="Servo Cam" {
+  			Slider item=ServoVer_Cam
+  			Slider item=ServoHor_Cam
+ 	    }
+		Frame label="Lamp RF433" {
+                Switch item=Lamp_GF_Kitchen="Lamp Kitchen"
+        }
+
+}
