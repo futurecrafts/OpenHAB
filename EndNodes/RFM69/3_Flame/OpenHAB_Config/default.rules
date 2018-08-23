@@ -1,25 +1,5 @@
 import org.openhab.core.library.types.*
 
-
-rule "RFM gas smoke threshold"
-        wh
-                Item RFCommon_Gas_OS_Main received update
-        then
-                if((RFCommon_Gas_OS_Main.state > 220) && (RFCommon_Gas_OS_Main_Enb.state == ON))
-                {
-                        sendCommand(RFCommon_Gas_OS_Main_STS, ON)
-                }
-end
-
-rule "RFM gas smoke response"
-        when
-                Item RFCommon_Gas_OS_Main_STS changed from OFF to ON
-        then
-		sendMail("futurecraft2078@gmail.com", "gas / smoke" , "gas or smoke detected")
-                playSound("ding.mp3")
-                postUpdate(RFCommon_Gas_OS_Main_Time, new DateTimeType())
-end
-
 rule "RFM flame threshold"
         when
                 Item RFCommon_Flame_OS_Main received update
