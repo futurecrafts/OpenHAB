@@ -1,0 +1,367 @@
+[Items]
+Switch LED_Candle "LED Candle" <network> {mqtt=">[ybmosquitto:home/esp/node01/ledcandle:command:on:ON],>[ybmosquitto:home/esp/node01/ledcandle:command:off:OFF], <[ybmosquitto:home/esp/node01/ledcandle:state:default]"}
+
+/* Lights */
+Color Light_GF_Living "LED Color"               <network>
+String LightColor_GF_Living                     <network> {mqtt=">[ybmosquitto:home/esp/node02/color:command:*:default]"}
+Number LightAnimation_GF_Living "LED Animation" <network> {mqtt=">[ybmosquitto:home/esp/node02/animation:command:*:default]"}
+
+Number ServoMove "Servo Move" <network> {mqtt=">[ybmosquitto:home/esp/node03/servo:command:*:default]"}
+
+Dimmer ServoVer_Cam "ServoVer [%d %%]" <slider> {mqtt=">[ybmosquitto:home/esp/node03/servocam/ver:command:*:default]"}
+Dimmer ServoHor_Cam "ServoHor [%d %%]" <slider> {mqtt=">[ybmosquitto:home/esp/node03/servocam/hor:command:*:default]"}
+
+Switch Lamp_GF_Kitchen "Lamp Kitchen" <network> {mqtt=">[ybmosquitto:home/esp/node04/rf433:command:on:ON],>[ybmosquitto:home/esp/node04/rf433:command:off:OFF], <[ybmosquitto:home/esp/node04/rf433:state:default]"}
+
+/* Temp and Humid */
+Number RFCommon_Temp_OS_Main "Outside Temperature [%.1f C]" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node03/dev48:state:default]"}
+Number RFCommon_Hum_OS_Main "Outside Humidity [%.1f]" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node03/dev49:state:default]"}
+Switch RFCommon_Temp_OS_Main_STS "Outside Temp Alarm Status"
+
+/* Gas and Smoke */
+Number RFCommon_Gas_OS_Main "Gas [%.1f]" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node03/dev50:state:default]"}
+Switch RFCommon_Gas_OS_Main_STS "Gas / Smoke Alarm Status"
+Switch RFCommon_Gas_OS_Main_Enb "Gas / Smoke Notifier"
+DateTime RFCommon_Gas_OS_Main_Time "Gas Alarm Time [%1$tA, %1$tm/%1$td, %1$tI:%1$tM %1$tp]"
+
+/* Flame */
+Number RFCommon_Flame_OS_Main "Flame [%.1f]" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node03/dev51:state:default]"}
+Switch RFCommon_Flame_OS_Main_STS "Flame Alarm Status"
+Switch RFCommon_Flame_OS_Main_Enb "Flame Notifier"
+DateTime RFCommon_Flame_OS_Main_Time "Flame Alarm Time [%1$tA, %1$tm/%1$td, %1$tI:%1$tM %1$tp]"
+
+/* Light */
+Number RFCommon_Light_OS_Main "Light Sensor [%.1f]" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node03/dev52:state:default]"}
+Switch RFCommon_Light_OS_Main_STS "Light Status"
+
+/* PIR */
+/*Switch RFCommon_PIR_OS_Front "PIR" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node03/dev41:state:default]"}*/
+Switch RFCommon_PIR_OS_Front_STS "PIR Presence Status" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node03/dev41:state:default]"}
+/*Switch RFCommon_PIR_OS_Front_STS "PIR Presence Status"*/
+Switch RFCommon_PIR_OS_Front_Enb "Presence Notifier"
+DateTime RFCommon_PIR_OS_Front_Time "PIR Presence Alarm Time [%1$tA, %1$tm/%1$td, %1$tI:%1$tM %1$tp]"
+
+/* Reed */
+Switch RFCommon_Reed_OS_Rear_STS "Reed Status" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node03/dev43:state:default]"}
+Number RFCommon_Reed_OS_Rear_Count "Reed Count [%.1d]" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node03/dev64:state:default]"}
+Switch RFCommon_Reed_OS_Rear_Enb "Reed Notifier"
+DateTime RFCommon_Reed_OS_Rear_Time "Reed Last Updated [%1$tA, %1$tm/%1$td, %1$tI:%1$tM %1$tp]"
+
+/* Sound */
+Switch RFCommon_Sound_OS_Rear_STS "Sound Status" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node03/dev42:state:default]"}
+Switch RFCommon_Sound_OS_Rear_Enb "Sound Notifier"
+DateTime RFCommon_Sound_OS_Rear_Time "Sound Last Updated [%1$tA, %1$tm/%1$td, %1$tI:%1$tM %1$tp]"
+
+/* Ultrasound */
+Number RFCommon_Ultra_OS_Garage "Garage Dist [%.1f cm]" <garage> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node03/dev53:state:default]"}
+Contact RFCommon_Ultra_OS_Garage_Door "Garage Door Status [MAP(en.map):%s]" <garage>
+
+/* GPS - different node 4 */
+Number GPS_lat "GPS lat [%.5f]" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node04/dev62:state:default]"}
+Number GPS_long "GPS long [%.5f]" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node04/dev63:state:default]"}
+String Yulia_GPS "Yulia_GPS string [%s]" {mqtt="<[ybmosquitto:yuliagps:state:JS(mqttitude-coordinates.js)]"}
+Switch Yulia_GPS_alm_enb "Yulia Escape Alarm Enable"
+Switch Yulia_GPS_alm_sta "Yulia Escape Alarm Status"
+
+[rules]
+
+import org.openhab.core.library.types.*
+
+rule "LED Light"
+when
+        Item Light_GF_Living changed
+then
+        val hsbValue = Light_GF_Living.state as HSBType
+
+        val brightness = hsbValue.brightness.intValue
+        val redValue   = ((((hsbValue.red.intValue * 255) / 100) * brightness) / 100).toString
+        val greenValue = ((((hsbValue.green.intValue * 255) / 100) * brightness) / 100).toString
+        val blueValue  = ((((hsbValue.blue.intValue *255) / 100) * brightness) / 100).toString
+
+        val color = redValue + "," + greenValue + "," + blueValue
+
+        sendCommand( LightColor_GF_Living, color )
+end
+
+rule "Servo Ver2"
+	when
+		Item ServoVer_Cam received command
+	then
+		var Number percent = 0
+		if(ServoVer_Cam.state instanceof DecimalType) percent = ServoVer_Cam.state as DecimalType 
+			
+		if(receivedCommand==INCREASE) percent = percent + 5
+		if(receivedCommand==DECREASE) percent = percent - 5
+
+		if(percent<0)   percent = 0
+		if(percent>100) percent = 100
+		postUpdate(ServoVer_Cam, percent);
+end
+
+rule "Servo Hor2"
+	when
+		Item ServoHor_Cam received command
+	then
+		var Number percent = 0
+		if(ServoHor_Cam.state instanceof DecimalType) percent = ServoHor_Cam.state as DecimalType 
+			
+		if(receivedCommand==INCREASE) percent = percent + 5
+		if(receivedCommand==DECREASE) percent = percent - 5
+
+		if(percent<0)   percent = 0
+		if(percent>100) percent = 100
+		postUpdate(ServoHor_Cam, percent);
+end
+
+rule "Lamp Test"
+		when
+				Item Lamp_GF_Kitchen received update
+		then
+				if(Lamp_GF_Kitchen.state == ON)
+				{
+						sendMail("futurecraft2078@gmail.com", "Sound detected" , "Sound detected!!!")
+						playSound("ding.mp3")
+				}
+end
+
+rule "RFM DHT-Temp threshold"
+        when
+            Item RFCommon_Temp_OS_Main received update
+        then
+            if(RFCommon_Temp_OS_Main.state > 25)
+            {
+                sendCommand(RFCommon_Temp_OS_Main_STS, ON)
+            }
+			else
+			{
+			    sendCommand(RFCommon_Temp_OS_Main_STS, OFF)
+			}
+end
+
+rule "RFM DHT-Temp response"
+        when
+            Item RFCommon_Temp_OS_Main_STS changed from OFF to ON
+        then
+            playSound("ding.mp3")
+			playSound("doorbell.mp3")
+end
+
+rule "RFM gas smoke threshold"
+        when
+                Item RFCommon_Gas_OS_Main received update
+        then
+                if((RFCommon_Gas_OS_Main.state > 220) && (RFCommon_Gas_OS_Main_Enb.state == ON))
+                {
+                        sendCommand(RFCommon_Gas_OS_Main_STS, ON)
+                }
+end
+
+rule "RFM gas smoke response"
+        when
+                Item RFCommon_Gas_OS_Main_STS changed from OFF to ON
+        then
+		sendMail("futurecraft2078@gmail.com", "gas / smoke" , "gas or smoke detected")
+                playSound("ding.mp3")
+                postUpdate(RFCommon_Gas_OS_Main_Time, new DateTimeType())
+end
+
+rule "RFM flame threshold"
+        when
+                Item RFCommon_Flame_OS_Main received update
+        then
+                if((RFCommon_Flame_OS_Main.state < 900) && (RFCommon_Flame_OS_Main_Enb.state == ON))
+                {
+                        sendCommand(RFCommon_Flame_OS_Main_STS, ON)
+                }
+end
+
+rule "RFM flame response"
+        when
+                Item RFCommon_Flame_OS_Main_STS changed from OFF to ON
+        then
+                sendMail("futurecraft2078@gmail.com", "fire detected" , "fire detected")
+                playSound("ding.mp3")
+                postUpdate(RFCommon_Flame_OS_Main_Time, new DateTimeType())
+end
+
+rule "RFM Lights"
+        when
+                Item RFCommon_Light_OS_Main received update
+        then
+                if(RFCommon_Light_OS_Main.state < 50)
+                {
+                        sendCommand(RFCommon_Light_OS_Main_STS, OFF)
+                }
+                else
+                {
+                        sendCommand(RFCommon_Light_OS_Main_STS, ON)
+                }
+end
+
+//rule "RFM PIR threshold"
+//        when
+//                Item RFCommon_PIR_OS_Front received update
+//        then
+//                if(RFCommon_PIR_OS_Front.state == ON)
+//                {
+//                        sendCommand(RFCommon_PIR_OS_Front_STS, ON)
+//                }
+//				else
+//				{
+//						sendCommand(RFCommon_PIR_OS_Front_STS, OFF)
+//				}
+//end
+
+rule "RFM PIR response"
+        when
+                Item RFCommon_PIR_OS_Front_STS changed from OFF to ON
+        then
+		        if(RFCommon_PIR_OS_Front_Enb.state == ON)
+				{
+                        sendMail("futurecraft2078@gmail.com", "pir detected" , "dog pired!!!")
+						playSound("ding.mp3")
+						postUpdate(RFCommon_PIR_OS_Front_Time, new DateTimeType())
+				}
+end
+
+rule "RFM Reed response"
+        when
+                Item RFCommon_Reed_OS_Rear_STS changed from OFF to ON
+        then
+		        if(RFCommon_Reed_OS_Rear_Enb.state == ON)
+				{
+                        sendMail("futurecraft2078@gmail.com", "Reed detected" , "Reed opened!!!")
+						playSound("ding.mp3")
+						postUpdate(RFCommon_Reed_OS_Rear_Time, new DateTimeType())
+				}
+end
+
+rule "RFM Sound response"
+        when
+                Item RFCommon_Sound_OS_Rear_STS changed from OFF to ON
+        then
+		        if(RFCommon_Sound_OS_Rear_Enb.state == ON)
+				{
+						sendMail("futurecraft2078@gmail.com", "Sound detected" , "Sound detected!!!")
+						playSound("ding.mp3")
+						postUpdate(itm_uber1_bark_time, new DateTimeType())
+				}
+end
+
+rule "RFM Ultrasound"
+		when
+
+				Item RFCommon_Ultra_OS_Garage received update
+		then	
+				if(RFCommon_Ultra_OS_Garage.state > 150)
+				{
+						RFCommon_Ultra_OS_Garage_Door.state = OPEN
+				}
+				else
+				{
+						RFCommon_Ultra_OS_Garage_Door.state = CLOSED
+				}
+
+end
+
+rule "RFM GPS location"
+when
+	Item GPS_long received update
+then
+    var Number Lat = GPS_lat.state as DecimalType
+	Lat = Lat / 1000000.0
+	var Number Long = GPS_long.state as DecimalType
+	Long = Long / 1000000.0
+	Yulia_GPS.postUpdate(Lat.toString + ","+ Long.toString)
+	if (( (GPS_long.state < -92.98101)) && (Yulia_GPS_alm_enb.state == ON))
+	{
+		//say("who let the dog out!")
+		if (Yulia_GPS_alm_sta.state==OFF)
+		  playSound("ding.mp3")
+		
+		sendCommand(Yulia_GPS_alm_sta, ON)
+	}
+end
+
+[sitemap]
+
+sitemap default label="YMSY Family House" {
+        Switch item=LED_Candle label="LED Candle"
+		Frame label="LED Light" {
+			Colorpicker item=Light_GF_Living icon="slider"
+            Selection item=LightAnimation_GF_Living mappings=[0=OFF, 1=RGB_wipe, 2=TheaterChase, 3=Rainbow, 4=RainbowCycle, 5=TheaterChaseRainbow]
+        }
+		Frame label="Servo Move" {
+  			Selection item=ServoMove label="Servo" mappings=[0=Forward, 1=Backward, 2=Left, 3=Right]
+  			Switch item=ServoMove label="Servo" mappings=[0=Forward, 1=Backward, 2=Left, 3=Right]
+ 	    } 
+		Frame label="Servo Cam" {
+  			Slider item=ServoVer_Cam
+  			Slider item=ServoHor_Cam
+ 	    }
+		Frame label="Lamp RF433" {
+                Switch item=Lamp_GF_Kitchen="Lamp Kitchen"
+        }
+		Frame label="RFM Nodes" {
+			Text item=RFCommon_Temp_OS_Main
+            Text item=RFCommon_Hum_OS_Main
+			Switch item=RFCommon_Temp_OS_Main_STS mappings=[OFF="OFF", ON="ON"]
+			
+			Text item=RFCommon_Gas_OS_Main
+            Switch item=RFCommon_Gas_OS_Main_STS mappings=[OFF="OFF"]
+            Switch item=RFCommon_Gas_OS_Main_Enb
+			Text item=RFCommon_Gas_OS_Main_Time
+			
+			Text item=RFCommon_Flame_OS_Main
+            Switch item=RFCommon_Flame_OS_Main_STS mappings=[OFF="OFF"]
+            Switch item=RFCommon_Flame_OS_Main_Enb
+			Text item=RFCommon_Flame_OS_Main_Time
+			
+			Text item=RFCommon_Light_OS_Main
+			Switch item=RFCommon_Light_OS_Main_STS
+			
+			Switch item=RFCommon_PIR_OS_Front_STS mappings=[OFF="OFF", ON="ON"] 
+  			Switch item=RFCommon_PIR_OS_Front_Enb 
+  			Text item=RFCommon_PIR_OS_Front_Time 
+			          			
+			Switch item=RFCommon_Reed_OS_Rear_STS mappings=[OFF="OFF", ON="ON"]
+			Text item=RFCommon_Reed_OS_Rear_Count
+			Switch item=RFCommon_Reed_OS_Rear_Enb
+			Text item=RFCommon_Reed_OS_Rear_Time
+			          			
+			Switch item=RFCommon_Sound_OS_Rear_STS mappings=[OFF="OFF", ON="ON"]
+			Switch item=RFCommon_Sound_OS_Rear_Enb
+			Text item=RFCommon_Sound_OS_Rear_Time
+			          			
+			Text item=RFCommon_Ultra_OS_Garage
+			Text item=RFCommon_Ultra_OS_Garage_Door label="Garage Door Status [%s]"
+        }	
+		Frame label="Yulia GPS"
+	    {
+		    Text label="Current Location" icon="firstfloor" {
+			Frame label="Current Location" {
+				Webview url="http://localhost:8080/static/dog.html" height=16
+			  }
+		    }//end page "current Location"
+		    Text label="Historical Location" icon="firstfloor" {
+			Frame label="Historical Location" {
+				Webview url="http://localhost:8080/static/dog2.html" height=16
+			  }
+		    }//end page "Historical Location"
+		    Switch item=Yulia_GPS_alm_sta mappings=[OFF="OFF"]
+		    Switch item=Yulia_GPS_alm_enb
+		    Text label="Yulia Tracker Setup" icon="firstfloor"
+		    {
+			    Frame label="Raw Data" {
+				    Text item=GPS_lat
+				    Text item=GPS_long
+				    Text item=Yulia_GPS
+			    }
+		    }//end page "Yulia Tracker Setup"
+		
+	    }//end frame "" for dog GPS	
+
+		 Frame label="WebCam" {
+              Video url="http://localhost:8081" encoding="mjpeg"
+		} 
+}
