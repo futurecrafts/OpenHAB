@@ -3,6 +3,18 @@
 /* RF433 */
 Switch Lamp_GF_Kitchen "Lamp Kitchen" <network> {mqtt=">[ybmosquitto:home/esp/node04/rf433:command:on:ON],>[ybmosquitto:home/esp/node04/rf433:command:off:OFF], <[ybmosquitto:home/esp/node04/rf433:state:default]"}
 
+[rule]
+rule "Lamp Test"
+when
+	Item Lamp_GF_Kitchen received update
+then
+	if(Lamp_GF_Kitchen.state == ON)
+	{	
+	     sendMail("futurecraft2078@gmail.com", "Sound detected", "Sound detected!!!")
+	     playSound("ding.mp3")
+	 }
+end
+
 [sitemap]
 sitemap default label="YMSY Family House" {	
 		Frame label="Lamp RF433" {
