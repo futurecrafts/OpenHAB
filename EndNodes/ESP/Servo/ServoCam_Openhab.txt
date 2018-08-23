@@ -1,7 +1,7 @@
 [items]
 
-Dimmer ServoVer_Cam "ServoVer [%d %%]" <slider> (SF_Living, Servo) {mqtt=">[ybmosquitto:home/esp/node03/servocam/ver:command:*:default]"}
-Dimmer ServoHor_Cam "ServoHor [%d %%]" <slider> (SF_Living, Servo) {mqtt=">[ybmosquitto:home/esp/node03/servocam/hor:command:*:default]"}
+Dimmer ServoVer_Cam "ServoVer [%d %%]" <slider> <network> {mqtt=">[ybmosquitto:home/esp/node03/servocam/ver:command:*:default]"}
+Dimmer ServoHor_Cam "ServoHor [%d %%]" <slider> <network> {mqtt=">[ybmosquitto:home/esp/node03/servocam/hor:command:*:default]"}
 
 [rules]
 rule "Servo Ver2"
