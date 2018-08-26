@@ -286,10 +286,14 @@ end
 [sitemap]
 
 sitemap default label="YMSY Family House" {
-        Switch item=LED_Candle label="LED Candle"
-		Frame label="LED Light" {
-			Colorpicker item=Light_GF_Living icon="slider"
-            Selection item=LightAnimation_GF_Living mappings=[0=OFF, 1=RGB_wipe, 2=TheaterChase, 3=Rainbow, 4=RainbowCycle, 5=TheaterChaseRainbow]
+	Frame label="Network Nodes" {
+	  Switch item=Presence_Mobile_MS label="MS's Mobile"
+	  Switch item=Presence_CCTV label="CCTV"
+	}
+	Frame label="LED Light" {
+	  Switch item=LED_Candle label="LED Candle"
+	  Colorpicker item=Light_GF_Living icon="slider"
+          Selection item=LightAnimation_GF_Living mappings=[0=OFF, 1=RGB_wipe, 2=TheaterChase, 3=Rainbow, 4=RainbowCycle, 5=TheaterChaseRainbow]
         }
 		Frame label="Servo Move" {
   			Selection item=ServoMove label="Servo" mappings=[0=Forward, 1=Backward, 2=Left, 3=Right]
