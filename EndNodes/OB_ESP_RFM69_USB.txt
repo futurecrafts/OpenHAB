@@ -59,9 +59,9 @@ Contact RFCommon_Ultra_OS_Garage_Door "Garage Door Status [MAP(en.map):%s]" <gar
 /* GPS - different node 4 */
 Number GPS_lat "GPS lat [%.5f]" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node04/dev62:state:default]"}
 Number GPS_long "GPS long [%.5f]" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node04/dev63:state:default]"}
-String Yulia_GPS "Yulia_GPS string [%s]" {mqtt="<[ybmosquitto:yuliagps:state:JS(mqttitude-coordinates.js)]"}
-Switch Yulia_GPS_alm_enb "Yulia Escape Alarm Enable"
-Switch Yulia_GPS_alm_sta "Yulia Escape Alarm Status"
+String Yolo_GPS "Yolo_GPS string [%s]" {mqtt="<[ybmosquitto:yuliagps:state:JS(mqttitude-coordinates.js)]"}
+Switch Yolo_GPS_alm_enb "Yolo Escape Alarm Enable"
+Switch Yolo_GPS_alm_sta "Yolo Escape Alarm Status"
 
 [rules]
 
@@ -272,14 +272,14 @@ then
 	Lat = Lat / 1000000.0
 	var Number Long = GPS_long.state as DecimalType
 	Long = Long / 1000000.0
-	Yulia_GPS.postUpdate(Lat.toString + ","+ Long.toString)
-	if (( (GPS_long.state < -92.98101)) && (Yulia_GPS_alm_enb.state == ON))
+	Yolo_GPS.postUpdate(Lat.toString + ","+ Long.toString)
+	if (( (GPS_long.state < -92.98101)) && (Yolo_GPS_alm_enb.state == ON))
 	{
 		//say("who let the dog out!")
-		if (Yulia_GPS_alm_sta.state==OFF)
+		if (Yolo_GPS_alm_sta.state==OFF)
 		  playSound("ding.mp3")
 		
-		sendCommand(Yulia_GPS_alm_sta, ON)
+		sendCommand(Yolo_GPS_alm_sta, ON)
 	}
 end
 
@@ -340,7 +340,7 @@ sitemap default label="YMSY Family House" {
 			Text item=RFCommon_Ultra_OS_Garage
 			Text item=RFCommon_Ultra_OS_Garage_Door label="Garage Door Status [%s]"
         }	
-		Frame label="Yulia GPS"
+		Frame label="Yolo GPS"
 	    {
 		    Text label="Current Location" icon="firstfloor" {
 			Frame label="Current Location" {
@@ -352,18 +352,18 @@ sitemap default label="YMSY Family House" {
 				Webview url="http://localhost:8080/static/dog2.html" height=16
 			  }
 		    }//end page "Historical Location"
-		    Switch item=Yulia_GPS_alm_sta mappings=[OFF="OFF"]
-		    Switch item=Yulia_GPS_alm_enb
-		    Text label="Yulia Tracker Setup" icon="firstfloor"
+		    Switch item=Yolo_GPS_alm_sta mappings=[OFF="OFF"]
+		    Switch item=Yolo_GPS_alm_enb
+		    Text label="Yolo Tracker Setup" icon="firstfloor"
 		    {
 			    Frame label="Raw Data" {
 				    Text item=GPS_lat
 				    Text item=GPS_long
-				    Text item=Yulia_GPS
+				    Text item=Yolo_GPS
 			    }
-		    }//end page "Yulia Tracker Setup"
+		    }//end page "Yolo Tracker Setup"
 		
-	    }//end frame "" for dog GPS	
+	    }//end frame "" for Yolo GPS	
 
 		 Frame label="WebCam" {
               Video url="http://localhost:8081" encoding="mjpeg"
