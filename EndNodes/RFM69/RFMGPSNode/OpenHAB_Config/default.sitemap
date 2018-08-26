@@ -1,5 +1,5 @@
 sitemap default label="YMSY Family House" {		
-		Frame label="Yulia GPS"
+		Frame label="Yolo GPS"
 	    {
 		    Text label="Current Location" icon="firstfloor" {
 			Frame label="Current Location" {
@@ -11,16 +11,16 @@ sitemap default label="YMSY Family House" {
 				Webview url="http://localhost:8080/static/dog2.html" height=16
 			  }
 		    }//end page "Historical Location"
-		    Switch item=Yulia_GPS_alm_sta mappings=[OFF="OFF"]
-		    Switch item=Yulia_GPS_alm_enb
-		    Text label="Yulia Tracker Setup" icon="firstfloor"
+		    Switch item=Yolo_GPS_alm_sta mappings=[OFF="OFF"]
+		    Switch item=Yolo_GPS_alm_enb
+		    Text label="Yolo Tracker Setup" icon="firstfloor"
 		    {
 			    Frame label="Raw Data" {
 				    Text item=GPS_lat
 				    Text item=GPS_long
-				    Text item=Yulia_GPS
+				    Text item=Yolo_GPS
 			    }
-		    }//end page "Yulia Tracker Setup"
+		    }//end page "Yolo Tracker Setup"
 		
-	    }//end frame "" for dog GPS		
+	    }//end frame "" for Yolo GPS		
 }
