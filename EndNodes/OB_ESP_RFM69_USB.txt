@@ -300,7 +300,7 @@ sitemap default label="YMSY Family House" {
   			Slider item=ServoHor_Cam
  	    }
 		Frame label="Lamp RF433" {
-                Switch item=Lamp_GF_Kitchen="Lamp Kitchen"
+                Switch item=Lamp_GF_Kitchen label="Lamp Kitchen"
         }
 		Frame label="RFM Nodes" {
 			Text item=RFCommon_Temp_OS_Main
