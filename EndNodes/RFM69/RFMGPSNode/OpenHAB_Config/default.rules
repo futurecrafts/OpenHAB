@@ -8,13 +8,13 @@ then
 	Lat = Lat / 1000000.0
 	var Number Long = GPS_long.state as DecimalType
 	Long = Long / 1000000.0
-	Yulia_GPS.postUpdate(Lat.toString + ","+ Long.toString)
-	if (( (GPS_long.state < -92.98101)) && (Yulia_GPS_alm_enb.state == ON))
+	Yolo_GPS.postUpdate(Lat.toString + ","+ Long.toString)
+	if (( (GPS_long.state < -92.98101)) && (Yolo_GPS_alm_enb.state == ON))
 	{
 		//say("who let the dog out!")
-		if (Yulia_GPS_alm_sta.state==OFF)
+		if (Yolo_GPS_alm_sta.state==OFF)
 		  playSound("ding.mp3")
 		
-		sendCommand(Yulia_GPS_alm_sta, ON)
+		sendCommand(Yolo_GPS_alm_sta, ON)
 	}
 end
