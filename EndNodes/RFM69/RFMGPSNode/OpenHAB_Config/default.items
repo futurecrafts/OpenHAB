@@ -1,6 +1,6 @@
 /* GPS */
 Number GPS_lat "GPS lat [%.5f]" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node04/dev62:state:default]"}
 Number GPS_long "GPS long [%.5f]" <network> {mqtt="<[ybmosquitto:home/rfm_gw/nb/node04/dev63:state:default]"}
-String Yulia_GPS "Yulia_GPS string [%s]" {mqtt="<[ybmosquitto:yuliagps:state:JS(mqttitude-coordinates.js)]"}
-Switch Yulia_GPS_alm_enb "Yulia Escape Alarm Enable"
-Switch Yulia_GPS_alm_sta "Yulia Escape Alarm Status"
+String Yolo_GPS "Yolo_GPS string [%s]" {mqtt="<[ybmosquitto:yuliagps:state:JS(mqttitude-coordinates.js)]"}
+Switch Yolo_GPS_alm_enb "Yolo Escape Alarm Enable"
+Switch Yolo_GPS_alm_sta "Yolo Escape Alarm Status"
