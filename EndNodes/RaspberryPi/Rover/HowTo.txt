@@ -2,3 +2,4 @@ Follow this link to create new Raspberry Pi node
 https://github.com/futurecrafts/RaspberryPi/tree/master/Rover
 
 Openhab configuration is the following
+https://github.com/futurecrafts/RaspberryPi/blob/master/Rover_OpenHAB_Sitemap.txt
