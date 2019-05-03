@@ -1,0 +1,58 @@
+1. Connect the RFM69 to the Raspberry PI
+
+Using SPI part of Raspberry expantion port, with the IRQ connected to the pin 22 (GPIO_25)
+
+3.3V  17
+GND   20
+SLCK  23
+MISO  21
+MOSI  19
+NSS   24
+DID0  22
+
+2. Install Git core
+sudo apt-get install git-core
+
+3. Download WiringPi
+git clone git://git.drogon.net/wiringPi
+
+4. Build WiringPi
+cd wiringPi
+./build
+
+5. Setup SPI interface, using raspi-config
+raspi-config
+
+6. Install Mosquitto and the development libraries 
+- based on http://mosquitto.org/2013/01/mosquitto-debian-repository
+
+wget http://repo.mosquitto.org/debian/mosquitto-repo.gpg.key
+sudo apt-key add mosquitto-repo.gpg.key
+cd /etc/apt/sources.list.d/
+sudo wget http://repo.mosquitto.org/debian/mosquitto-wheezy.list
+sudo apt-get update
+sudo apt-get install mosquitto mosquitto-clients libmosquitto-dev libmosquittopp-dev
+
+7. Clone the gateway
+git clone git://github.com/abouillot/HomeAutomation
+
+8. Compile the gateway
+cd HomeAutomation/piGateway
+g++ Gateway.c rfm69.cpp -o Gateway -lwiringPi -lmosquitto -DRASPBERRY -DDEBUG
+
+9. Launch the gateway
+sudo ./Gateway
+
+10. Install Daemon
+The Gateway can also be run as a daemon
+To build it you can use
+
+make Gatewayd
+To intsall the Gateway as a service and run it
+
+sudo make install
+This will build it as well, if not already done. The service will be lauch at every startup of the system.
+
+To remove the service you can use the command
+
+sudo make uninstall
